@@ -14,9 +14,9 @@ import {
 export default function GenerateFishPage() {
   const [color, setColor] = useState('');
   const [shape, setShape] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [fishImageUrl, setFishImageUrl] = useState(null);
+  const [fishImageUrl, setFishImageUrl] = useState<string | null>(null);
 
   const handleGenerate = async () => {
     setError(null);
@@ -24,7 +24,7 @@ export default function GenerateFishPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/generate', {
+      const response = await fetch('http://localhost:5000/fish/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

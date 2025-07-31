@@ -1,6 +1,20 @@
+"use client"
 
-'use client';
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { checkLogin } from "@/lib/apiClient"
+import LoadingPage from "@/components/LoadingPage"
 
 export default function IndexPage() {
-  return <p>確認中...</p>; // 一瞬だけ表示される
+  const router = useRouter()
+
+  useEffect(() => {
+    const verify = async () => {
+      const loggedIn = await checkLogin()
+      router.replace(loggedIn ? "/home" : "/login")
+    }
+    verify()
+  }, [router])
+
+  return <LoadingPage/>
 }

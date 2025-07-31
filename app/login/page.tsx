@@ -1,6 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { checkLogin } from '@/lib/apiClient';
 import { TextField, Button, Container, Typography, Box, Alert } from '@mui/material';
 
 export default function Home() {
@@ -9,6 +10,16 @@ export default function Home() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() =>{
+    const verify = async()=> {
+      const loggedIn= await checkLogin();
+      if (loggedIn){
+        router.replace("/home");
+      }
+    }
+    verify();
+  }, [router]);
 
   // 本当はファイル切り離す
   const handleLogin = async () => {
@@ -31,6 +42,7 @@ export default function Home() {
       const result = await res.json();
       if (res.ok) {
         setMessage(result.message || 'ログイン成功');
+        router.replace("/home");
       } else {
         setError(result.error || 'ログイン失敗');
       }
