@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useUser } from '@/contexts/UserContext';
 import {
   Container,
   TextField,
@@ -10,8 +11,10 @@ import {
   Alert,
   CircularProgress,
 } from '@mui/material';
+import { generateFish } from '@/api/apiClient';
 
 export default function GenerateFishPage() {
+  const { refreshUser } = useUser();
   const [color, setColor] = useState('');
   const [shape, setShape] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -24,32 +27,13 @@ export default function GenerateFishPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/fish/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include', // セッション管理があるなら
-        body: JSON.stringify({
-          ans: { color, shape },
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(errorData.error || '生成失敗');
-        setLoading(false);
-        return;
-      }
-
-      // バイナリデータとして画像を受け取る
-      const blob = await response.blob();
-      // BlobからURL作成
+      const blob = await generateFish(color, shape);
+      refreshUser();
       const url = URL.createObjectURL(blob);
       setFishImageUrl(url);
       setLoading(false);
-    } catch (e) {
-      setError('通信エラーが発生しました');
+    } catch (e: any) {
+      setError(e.message || '通信エラーが発生しました');
       setLoading(false);
     }
   };

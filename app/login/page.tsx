@@ -1,10 +1,12 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { useUser } from '@/contexts/UserContext';
 import { useRouter } from 'next/navigation';
-import { checkLogin } from '@/lib/apiClient';
+import { checkLogin, login } from '@/api/apiClient';
 import { TextField, Button, Container, Typography, Box, Alert } from '@mui/material';
 
 export default function Home() {
+  const { refreshUser } = useUser();
   const router = useRouter();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
@@ -21,34 +23,21 @@ export default function Home() {
     verify();
   }, [router]);
 
-  // 本当はファイル切り離す
   const handleLogin = async () => {
     setMessage(null);
     setError(null);
 
     try {
-      const res = await fetch('http://localhost:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          user_id: userId,
-          password: password,
-        }),
-      });
-
-      const result = await res.json();
-      if (res.ok) {
-        setMessage(result.message || 'ログイン成功');
+      const result = await login(userId, password);
+      if (result.ok) {
+        setMessage(result.data.message || 'ログイン成功');
+        await refreshUser();
         router.replace("/home");
       } else {
-        setError(result.error || 'ログイン失敗');
+        setError(result.data.error || 'ログイン失敗');
       }
     } catch (err) {
-      console.error(err);
-      setError('通信エラーが発生しました');
+      setError(err instanceof Error ? err.message : '通信エラーが発生しました');
     }
   };
 

@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { checkLogin } from "@/lib/apiClient"
+import { checkLogin } from "@/api/apiClient"
 import LoadingPage from "@/components/LoadingPage"
 
 export default function IndexPage() {

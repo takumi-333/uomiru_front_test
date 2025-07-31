@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import { useRouter } from "next/navigation";
-import { logout } from "@/lib/apiClient";
+import { fetchFishImageBlob, logout } from "@/api/apiClient";
 import { Box, Typography, Button } from "@mui/material";
+import LoadingPage from '@/components/LoadingPage';
 
 const HomePage = () => {
-  const { user, setUser } = useUser();
+  const { user, loading, setUser, refreshUser } = useUser();
   const [fishImgUrl, setFishImgUrl]  = useState<string | null>(null);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -18,21 +18,10 @@ const HomePage = () => {
       return;
     }
 
-    // fish APIのpathパラメータはuserオブジェクトの持つパスに合わせて変更してください
     const fetchFishImage = async () => {
       try {
-        if (!user.my_fish_path) {
-          setFishImgUrl(null);
-          return;
-        }
-        const response = await fetch(`http://localhost:5000/fish?path=${encodeURIComponent(user.my_fish_path)}`);
-
-        if (response.status === 204) {
-          // 画像なし
-          setFishImgUrl(null);
-        } else if (response.ok) {
-          // Blobに変換してURL作成
-          const blob = await response.blob();
+        const blob = await fetchFishImageBlob(user.my_fish_path);
+        if (blob) {
           const url = URL.createObjectURL(blob);
           setFishImgUrl(url);
         } else {
@@ -46,7 +35,6 @@ const HomePage = () => {
 
     fetchFishImage();
 
-    // クリーンアップでURLを解放
     return () => {
       if (fishImgUrl) {
         URL.revokeObjectURL(fishImgUrl);
@@ -56,13 +44,15 @@ const HomePage = () => {
 
   const handleLogout = async () => {
     await logout();
-    setUser(null);
+    await refreshUser();
     router.replace('/login');
   }
 
   const handleGoToGenerate = async () => {
     router.push('/fish/generate');
   }
+
+  if (loading) return <LoadingPage/>;
 
   return ( 
     <Box sx={{ p: 4 }}>
