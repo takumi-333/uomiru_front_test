@@ -4,6 +4,7 @@ import { useUser } from '@/contexts/UserContext';
 import { useRouter } from 'next/navigation';
 import { checkLogin, login } from '@/api/apiClient';
 import { TextField, Button, Container, Typography, Box, Alert } from '@mui/material';
+import Image from 'next/image';
 
 export default function Home() {
   const { refreshUser } = useUser();
@@ -46,10 +47,19 @@ export default function Home() {
   }
 
   return (
-    <Container maxWidth="xs" sx={{ mt: 8 }}>
-      <Typography variant="h4" align="center" gutterBottom>
-        ログイン
+    <Container maxWidth="sm" sx={{ mt: 8 }}>
+      <Typography variant="h1" align="center" gutterBottom sx={{ color: 'blue' }}>
+        ウオミル
       </Typography>
+      <Box sx={{ textAlign: 'center', mb: 4 }}>
+        <Image
+          src="/logo.png"
+          alt="ウオミル ロゴ"
+          width={150}
+          height={150}
+          priority
+        />
+      </Box>
       <Box display="flex" flexDirection="column" gap={2}>
         <TextField
           label="ユーザーID"
