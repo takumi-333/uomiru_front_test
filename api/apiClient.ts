@@ -96,3 +96,20 @@ export const fetchFeeds = async () => {
   if (!res.ok) throw new Error("餌一覧の取得に失敗しました");
   return await res.json();
 }
+
+export const evolveFish = async (feed_id: string) => {
+  const formData = new FormData();
+  formData.append('feed_id', feed_id);
+  const res = await fetch('http://localhost:5000/fish/evolve', {
+    method: 'POST',
+    // headers: {'Accept': 'application/json'},
+    body: formData,
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    throw new Error("進化に失敗しました");
+  }
+
+  return res.blob();
+}
