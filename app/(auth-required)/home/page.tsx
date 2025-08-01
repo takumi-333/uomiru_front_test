@@ -51,13 +51,11 @@ const HomePage = () => {
   if (loading) return <LoadingPage/>;
 
   return ( 
-    <Box sx={{ p: 4 }}>
-        <>
-          <Aquarium fishImgUrl={fishImgUrl} />
-          <Button variant="contained" color="primary" onClick={handleGoToGenerate}>
-            魚を生成する
-          </Button>
-        </>
+    <Box sx={{ p: 1 }}>
+        <Aquarium fishImgUrl={fishImgUrl} />
+        <Button variant="contained" color="primary" onClick={handleGoToGenerate}>
+          魚を生成する
+        </Button>
     </Box>
    );
 }

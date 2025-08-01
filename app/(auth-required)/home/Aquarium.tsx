@@ -3,6 +3,7 @@
 import { Box } from "@mui/material";
 import { motion } from 'framer-motion';
 import Image from "next/image";
+import { Bubble } from "./Bubble";
 
 export const Aquarium = ({fishImgUrl} : {fishImgUrl: string | null}) => {
   return (
@@ -10,16 +11,33 @@ export const Aquarium = ({fishImgUrl} : {fishImgUrl: string | null}) => {
       sx={{
         width: 500,
         height: 300,
-        background: 'linear-gradient(to bottom, #b3e5fc, #81d4fa)',
-        borderRadius: 4,
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
+        borderRadius: 2,
         overflow: 'hidden',
-        border: '4px solid #0288d1',
         position: 'relative',
         mx: 'auto',
         my: 1,
       }}
     >
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          background: `
+            radial-gradient(circle at 50% 20%, rgba(255,255,255,0.3), transparent 70%),
+            linear-gradient(to bottom, #4a90e2, #2a65a0)
+          `,
+          filter: 'blur(4px)',
+          zIndex: 0,
+        }}
+      />
+      {[...Array(6)].map((_, i) => (
+        <Bubble
+          key={i}
+          delay={i * 1.5}
+          left={Math.random() * 100}
+          size={6 + Math.random() * 10}
+        />
+      ))}
       <motion.div
         animate={{
           x: [30, 250, 30],
@@ -32,7 +50,7 @@ export const Aquarium = ({fishImgUrl} : {fishImgUrl: string | null}) => {
         }}
         style={{
           position: 'absolute',
-          top: '35%',
+          top: '30%',
           left: '0%',
           transform: 'translateY(-50%)',
         }}
@@ -41,8 +59,8 @@ export const Aquarium = ({fishImgUrl} : {fishImgUrl: string | null}) => {
           <Image
             src={fishImgUrl} 
             alt="fish"
-            width={120}
-            height={80}
+            width={200}
+            height={140}
           />
         )}
       </motion.div>

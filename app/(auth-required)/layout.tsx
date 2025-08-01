@@ -8,6 +8,7 @@ import { AppBar, Typography, Button, Box, Container, Toolbar } from "@mui/materi
 import { useUser } from "@/contexts/UserContext"
 import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Image from "next/image"
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -38,8 +39,15 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <>
       <AppBar position="static">
         <Toolbar>
-          <Box sx={{ flexGrow: 1}}>
+          <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
             <Typography variant="h6">ウオミル</Typography>
+            <Image
+              src="/logo.png"
+              alt="ウオミル ロゴ"
+              width={50}
+              height={50}
+              priority
+            />
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1}}>
             <Button color="inherit" onClick={handleLogout}>
