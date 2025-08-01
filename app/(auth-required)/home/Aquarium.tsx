@@ -1,11 +1,39 @@
 'use client';
 
 import { Box } from "@mui/material";
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import Image from "next/image";
 import { Bubble } from "./Bubble";
+import { useEffect } from "react";
 
-export const Aquarium = ({fishImgUrl} : {fishImgUrl: string | null}) => {
+export const Aquarium = ({ fishImgUrl }: { fishImgUrl: string | null }) => {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    const loopAnimation = async () => {
+      while (true) {
+        await controls.start({
+          scaleX: -1,
+          transition: {duration: 0.1}
+        })
+        await controls.start({
+          x: 250,
+          transition: { duration: 5, ease: "easeInOut" },
+        });
+        await controls.start({
+          scaleX: 1,
+          transition: {duration: 0.1}
+        })
+        await controls.start({
+          x: 30,
+          transition: { duration: 5, ease: "easeInOut" },
+        });
+      }
+    };
+
+    loopAnimation();
+  }, [controls]);
+
   return (
     <Box
       sx={{
@@ -18,6 +46,7 @@ export const Aquarium = ({fishImgUrl} : {fishImgUrl: string | null}) => {
         my: 1,
       }}
     >
+      {/* 背景 */}
       <Box
         sx={{
           position: 'absolute',
@@ -30,6 +59,8 @@ export const Aquarium = ({fishImgUrl} : {fishImgUrl: string | null}) => {
           zIndex: 0,
         }}
       />
+
+      {/* 泡 */}
       {[...Array(6)].map((_, i) => (
         <Bubble
           key={i}
@@ -38,26 +69,20 @@ export const Aquarium = ({fishImgUrl} : {fishImgUrl: string | null}) => {
           size={6 + Math.random() * 10}
         />
       ))}
+
+      {/* 魚 */}
       <motion.div
-        animate={{
-          x: [30, 250, 30],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          repeatType: 'reverse'
-        }}
+        animate={controls}
         style={{
           position: 'absolute',
           top: '30%',
-          left: '0%',
-          transform: 'translateY(-50%)',
+          left: 0,
+          transformOrigin: 'center',
         }}
       >
         {fishImgUrl && fishImgUrl !== "" && (
           <Image
-            src={fishImgUrl} 
+            src={fishImgUrl}
             alt="fish"
             width={200}
             height={140}
@@ -65,5 +90,5 @@ export const Aquarium = ({fishImgUrl} : {fishImgUrl: string | null}) => {
         )}
       </motion.div>
     </Box>
-  )
-}
+  );
+};
