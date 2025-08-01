@@ -4,14 +4,13 @@ import { useState, useEffect } from 'react';
 import { useUser } from "@/contexts/UserContext";
 import { useRouter } from "next/navigation";
 import { fetchFishImageBlob } from "@/api/apiClient";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import LoadingPage from '@/components/LoadingPage';
 import { Aquarium } from './Aquarium';
 
 const HomePage = () => {
   const { user, loading } = useUser();
   const [fishImgUrl, setFishImgUrl]  = useState<string | null>(null);
-  console.log(fishImgUrl)
   const router = useRouter();
 
   useEffect(() => {
@@ -48,6 +47,10 @@ const HomePage = () => {
     router.push('/fish/generate');
   }
 
+  const handleGoToEvolve = async () => {
+    router.push('/fish/evolve');
+  }
+
   if (loading) return <LoadingPage/>;
 
   return ( 
@@ -58,14 +61,15 @@ const HomePage = () => {
             variant="contained"
             color="primary"
             onClick={handleGoToGenerate}
-            disabled={!user || fishImgUrl}
+            // disabled={!user || fishImgUrl !== ""}
+            disabled={!user}
           >
             魚を生成する
           </Button>
           <Button 
             variant="contained"
             color="primary"
-            onClick={() => {}}
+            onClick={handleGoToEvolve}
             disabled={!user || !fishImgUrl}
           >
             魚を育成する
