@@ -3,13 +3,15 @@
 import { useState, useEffect } from 'react';
 import { useUser } from "@/contexts/UserContext";
 import { useRouter } from "next/navigation";
-import { fetchFishImageBlob, logout } from "@/api/apiClient";
+import { fetchFishImageBlob } from "@/api/apiClient";
 import { Box, Typography, Button } from "@mui/material";
 import LoadingPage from '@/components/LoadingPage';
+import { Aquarium } from './Aquarium';
 
 const HomePage = () => {
-  const { user, loading, setUser, refreshUser } = useUser();
+  const { user, loading } = useUser();
   const [fishImgUrl, setFishImgUrl]  = useState<string | null>(null);
+  console.log(fishImgUrl)
   const router = useRouter();
 
   useEffect(() => {
@@ -42,12 +44,6 @@ const HomePage = () => {
     };
   }, [user]);
 
-  const handleLogout = async () => {
-    await logout();
-    await refreshUser();
-    router.replace('/login');
-  }
-
   const handleGoToGenerate = async () => {
     router.push('/fish/generate');
   }
@@ -56,39 +52,12 @@ const HomePage = () => {
 
   return ( 
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        {user ? `こんにちは、${user.user_id} さん` : "ログインしていません"}
-      </Typography>
-      {user && (
         <>
-          {fishImgUrl ? (
-            <Box
-              component="img"
-              src={fishImgUrl}
-              alt="My Fish"
-              sx={{ width: 300, height: 300, objectFit: "contain", mb: 2 }}
-            />
-          ) : (
-            <Box
-              sx={{
-                width: 300,
-                height: 300,
-                mb: 2,
-                border: "2px dashed gray", 
-                borderRadius: 1,
-              }}
-            />
-          )}
-
-          <Button variant="outlined" color="primary" onClick={handleLogout}>
-            ログアウト
-          </Button>
-
+          <Aquarium fishImgUrl={fishImgUrl} />
           <Button variant="contained" color="primary" onClick={handleGoToGenerate}>
             魚を生成する
           </Button>
         </>
-      )}
     </Box>
    );
 }
