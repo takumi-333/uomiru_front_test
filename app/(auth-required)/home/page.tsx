@@ -53,9 +53,32 @@ const HomePage = () => {
   return ( 
     <Box sx={{ p: 1 }}>
         <Aquarium fishImgUrl={fishImgUrl} />
-        <Button variant="contained" color="primary" onClick={handleGoToGenerate}>
-          魚を生成する
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, gap: 2}}>
+          <Button 
+            variant="contained"
+            color="primary"
+            onClick={handleGoToGenerate}
+            disabled={!user || fishImgUrl}
+          >
+            魚を生成する
+          </Button>
+          <Button 
+            variant="contained"
+            color="primary"
+            onClick={() => {}}
+            disabled={!user || !fishImgUrl}
+          >
+            魚を育成する
+          </Button>
+          <Button 
+            variant="contained"
+            color="primary"
+            onClick={() => {}}
+            disabled={!user || !fishImgUrl}
+          >
+            魚を鑑賞する
+          </Button>
+        </Box>
     </Box>
    );
 }
