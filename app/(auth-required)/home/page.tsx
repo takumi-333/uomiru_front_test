@@ -61,8 +61,8 @@ const HomePage = () => {
             variant="contained"
             color="primary"
             onClick={handleGoToGenerate}
-            // disabled={!user || fishImgUrl !== ""}
-            disabled={!user}
+            disabled={!user || fishImgUrl !== ""}
+            sx={{ width: '150px', height: '100px' }}
           >
             魚を生成する
           </Button>
@@ -71,6 +71,7 @@ const HomePage = () => {
             color="primary"
             onClick={handleGoToEvolve}
             disabled={!user || !fishImgUrl}
+            sx={{ width: '150px', height: '100px' }}
           >
             魚を育成する
           </Button>
@@ -79,6 +80,7 @@ const HomePage = () => {
             color="primary"
             onClick={() => {}}
             disabled={!user || !fishImgUrl}
+            sx={{ width: '150px', height: '100px' }}
           >
             魚を鑑賞する
           </Button>
