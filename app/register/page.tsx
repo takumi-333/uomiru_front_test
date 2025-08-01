@@ -9,6 +9,9 @@ import {
   Alert,
 } from '@mui/material';
 
+
+// 画面遷移せず、UXがかなり悪い、要修正
+
 export default function RegisterPage() {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');

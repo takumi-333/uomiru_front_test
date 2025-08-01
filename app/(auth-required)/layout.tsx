@@ -21,6 +21,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     router.replace('/login');
   }
 
+  const handleGoToHome = () => {
+    router.push('/home');
+  }
   useEffect(() => {
     const verify = async () => {
       const loggedIn = await checkLogin()
@@ -39,22 +42,28 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <>
       <AppBar position="static">
         <Toolbar>
-          <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
-            <Typography variant="h6">ウオミル</Typography>
+          <Box
+            sx={{ display: 'flex', alignItems: 'center', gap: 1, cursor: 'pointer' }}
+            onClick={handleGoToHome}
+          >
             <Image
               src="/logo.png"
               alt="ウオミル ロゴ"
-              width={50}
-              height={50}
+              width={36}
+              height={36}
               priority
             />
+            <Typography variant="h6" noWrap>ウオミル</Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1}}>
+
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Button color="inherit" onClick={handleLogout}>
               <LogoutIcon />
             </Button>
             <PersonIcon />
-            <Typography>{user? `${user.user_id} さん` : ""}</Typography>
+            <Typography>{user ? `${user.user_id} さん` : ""}</Typography>
           </Box>
         </Toolbar>
       </AppBar>

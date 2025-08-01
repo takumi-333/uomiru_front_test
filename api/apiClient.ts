@@ -90,3 +90,9 @@ export const generateFish = async (color: string, shape: string): Promise<Blob> 
 
   return await response.blob();
 };
+
+export const fetchFeeds = async () => {
+  const res = await fetch('http://localhost:5000/feeds');
+  if (!res.ok) throw new Error("餌一覧の取得に失敗しました");
+  return await res.json();
+}
