@@ -48,7 +48,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode}) => {
       return;
     }
     try {
-      const blob = await fetchFishImageBlob(user.my_fish_path);
+      const blob = await fetchFishImageBlob();
       if (blob) {
         const url = URL.createObjectURL(blob);
         setFishUrl(url);

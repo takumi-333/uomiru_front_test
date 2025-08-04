@@ -59,10 +59,9 @@ export const fetchCurrentUser = async () => {
   }
 };
 
-export const fetchFishImageBlob = async (fishPath: string): Promise<Blob | null> => {
-  if (!fishPath) return null;
+export const fetchFishImageBlob = async (): Promise<Blob | null> => {
   try {
-    const response = await fetch(`http://localhost:5000/fish?path=${encodeURIComponent(fishPath)}`);
+    const response = await fetch(`http://localhost:5000/fish`, { credentials: 'include'});
     if (response.status === 204) return null;
     return await response.blob();
   } catch (error) {
