@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { fetchCurrentUser, fetchFishImageBlob } from '@/api/apiClient';
 
 type User = {
-  user_id: string,
+  id: string,
   my_fish_path: string,
 } | null;
 
