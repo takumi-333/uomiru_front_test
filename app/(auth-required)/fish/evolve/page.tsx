@@ -13,8 +13,8 @@ type Feed = {
   img_path: string;
 };
 
-const EvolovePage = () => {
-  const { refreshUser } = useUser();
+const EvolvePage = () => {
+  const { refreshUser, fishUrl } = useUser();
   const [feeds, setFeeds] = useState<Feed[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -65,7 +65,7 @@ const EvolovePage = () => {
       setStep('result');
     } catch (error) {
       console.error(error);
-      setStep('select');
+      setStep('result');
     } 
   }
 
@@ -152,4 +152,4 @@ const EvolovePage = () => {
    );
 }
  
-export default EvolovePage;
+export default EvolvePage;
