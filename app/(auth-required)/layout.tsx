@@ -63,7 +63,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               <LogoutIcon />
             </Button>
             <PersonIcon />
-            <Typography>{user ? `${user.user_id} さん` : ""}</Typography>
+            <Typography>{user ? `${user.id} さん` : ""}</Typography>
           </Box>
         </Toolbar>
       </AppBar>
