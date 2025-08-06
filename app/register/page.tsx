@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
 import {
   Container,
   TextField,
@@ -17,6 +18,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleRegister = async () => {
     setMessage(null);
@@ -34,6 +36,7 @@ export default function RegisterPage() {
       const result = await res.json();
       if (res.ok) {
         setMessage(result.message || '登録成功');
+        router.push('/login');
       } else {
         setError(result.error || '登録失敗');
       }
