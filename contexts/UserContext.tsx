@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { fetchCurrentUser, fetchFishImageBlob } from '@/api/apiClient';
+import { checkLogin, fetchCurrentUser, fetchFishImageBlob } from '@/api/apiClient';
 
 type User = {
   id: string,
@@ -30,13 +30,20 @@ export const UserProvider = ({ children }: { children: React.ReactNode}) => {
   const [user, setUser] = useState<User>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [fishUrl, setFishUrl] = useState<string | null>(null);
-  const getUser = async () => {
-    console.log("currentuser取得")
+  
+  
+  const checkLoginAndGetUser = async () => {
     try {
-      const data = await fetchCurrentUser();
-      setUser(data);
-    } catch(err) {
+      const logged_in = await checkLogin();
+      if (logged_in) {
+        const data = await fetchCurrentUser();
+        setUser(data);
+      } else {
+        setUser(null);
+      }
+    } catch (err) {
       console.error(err);
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -62,7 +69,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode}) => {
   }
 
   useEffect(() => {
-    getUser();
+    checkLoginAndGetUser();
   }, []);
 
   useEffect(() => {
@@ -70,7 +77,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode}) => {
   }, [user]);
 
   const refreshUser = async () => {
-    await getUser();
+    await checkLoginAndGetUser();
   }
 
   return (
